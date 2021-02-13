@@ -127,24 +127,24 @@ void stringtovector(std::vector<std::pair<char, int>> &vecin, std::string str) {
 
 int main(int argc, char *argv[]) {
 
-    std::vector<std::pair<char, int>> vecin;
-    stringtovector(vecin, argv[3]);
-    auto start1 = std::chrono::system_clock::now();
-    // Code("text.txt", "textout.txt",vecin);
-    Decode("textout.txt", "decode.txt", vecin);
-    auto end1 = std::chrono::system_clock::now();
-    auto time1 = std::chrono::duration_cast<std::chrono::nanoseconds>(end1 - start1);
-    std::cout << "The time " << time1.count() << std::endl;
-//    std::string mode = argv[2];
 //    std::vector<std::pair<char, int>> vecin;
 //    stringtovector(vecin, argv[3]);
-//    if (mode == "code") {
-//        Code(argv[4], argv[5], vecin);
-//    }
-//
-//    if (mode == "decode") {
-//        Decode(argv[4], argv[5], vecin);
-//    }
+//    auto start1 = std::chrono::system_clock::now();
+//    // Code("text.txt", "textout.txt",vecin);
+//    Decode("textout.txt", "decode.txt", vecin);
+//    auto end1 = std::chrono::system_clock::now();
+//    auto time1 = std::chrono::duration_cast<std::chrono::nanoseconds>(end1 - start1);
+//    std::cout << "The time " << time1.count() << std::endl;
+    std::string mode = argv[2];
+    std::vector<std::pair<char, int>> vecin;
+    stringtovector(vecin, argv[3]);
+    if (mode == "code") {
+        Code(argv[4], argv[5], vecin);
+    }
+
+    if (mode == "decode") {
+        Decode(argv[4], argv[5], vecin);
+    }
     return 0;
     //argv[2]-режим работы
     //argv[3]-вектор инициализации
