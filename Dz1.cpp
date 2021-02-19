@@ -32,12 +32,11 @@ void Code(std::string ifs, std::string ofs) {
     in.read(&text[0], sizebytes);
     in.close();
     while (text.length() % 8 != 0) {
-        text.push_back('\0');
+        text.push_back(',');
     }
     Block block;
     block.shortstr = 0;
     std::ofstream out(ofs, std::ios::binary);
-    int a = 0, b = 0;
     for (int i = 0; i < text.length(); i++) {
         block.shortstr += (text[i]);
         block >> 8;
@@ -47,14 +46,7 @@ void Code(std::string ifs, std::string ofs) {
                 shfr += rand();
                 shfr = shfr << 16;
             }
-            a = rand() % 65;
-            b = rand() % 2;
-
-            if (b == 1) {
-                block << a;
-            } else {
-                block >> a;
-            }
+            block>>5;
             out.write(reinterpret_cast<char *>(&block.shortstr), sizeof(uint64_t));
             block.shortstr = 0;
         }
@@ -69,22 +61,18 @@ void Decode(std::string ifs, std::string ofs) {
     size_t sizebytes = in.tellg();
     in.seekg(0, std::ios::beg);
     Block block;
-    int a = 0, b = 0;
     for (int i = 1; in.read(reinterpret_cast<char *>(&block.shortstr), sizeof(uint64_t)); i++) {
         uint64_t shfr = 0;
         for (int b = 0; b < 4; b++) {
             shfr += rand();
             shfr = shfr << 16;
         }
-        a = rand() % 65;
-        b = rand() % 2;
-        if (b == 1) {
-            block >> a;
-        } else {
-            block << a;
-        }
+        block<<5;
         if (i == (sizebytes / 8)) {
             std::string str(reinterpret_cast<char *>(&block.shortstr));
+            while (str[str.size()-1]==','){
+                str.pop_back();
+            }
             out.write(reinterpret_cast<char *>(&block.shortstr), str.size());
             continue;
         }
